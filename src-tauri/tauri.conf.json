@@ -1,0 +1,32 @@
+{
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "devPath": "http://localhost:3000"
+  },
+  "package": {
+    "productName": "Excel Budget",
+    "version": "0.1.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": false
+    },
+    "bundle": {
+      "active": true,
+      "targets": "all",
+      "identifier": "com.excel-budget.app",
+      "icon": [
+        "icons/icon_32.png",
+        "icons/icon_128.png"
+      ]
+    },
+    "windows": [
+      {
+        "title": "Excel Business Budget Generator Pro",
+        "width": 1280,
+        "height": 800
+      }
+    ]
+  }
+}

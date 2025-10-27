@@ -1,0 +1,19 @@
+[package]
+name = "excel-business-budget-generator-pro"
+version = "0.1.0"
+description = "Excel Business Budget Generator Pro"
+authors = ["You"]
+license = ""
+repository = ""
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "1.0", features = [] }
+
+[dependencies]
+tauri = { version = "1.0", features = [] }
+serde = { version = "1.0", features = ["derive"] }
+
+[features]
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]

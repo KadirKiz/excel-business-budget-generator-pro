@@ -1,0 +1,60 @@
+/**
+ * Globale Styles für Excel Business Budget Generator Pro
+ * Tech Designsystem CSS Variables
+ */
+
+:root {
+  /* Tech Light Theme - CSS Variables */
+  --background: 0 0% 100%;
+  --foreground: 221 39% 11%;
+  --card: 0 0% 100%;
+  --card-foreground: 221 39% 11%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 221 39% 11%;
+  --primary: 199 89% 48%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 210 33% 95%;
+  --secondary-foreground: 221 39% 11%;
+  --muted: 210 33% 97%;
+  --muted-foreground: 215 16% 47%;
+  --accent: 210 33% 95%;
+  --accent-foreground: 221 39% 11%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 214 32% 91%;
+  --input: 214 32% 91%;
+  --ring: 199 89% 48%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  /* Tech Dark Theme - CSS Variables */
+  --background: 221 39% 11%;
+  --foreground: 0 0% 98%;
+  --card: 221 39% 11%;
+  --card-foreground: 0 0% 98%;
+  --popover: 221 39% 11%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 199 89% 48%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 217 23% 28%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 217 19% 27%;
+  --muted-foreground: 215 20% 65%;
+  --accent: 217 23% 28%;
+  --accent-foreground: 0 0% 98%;
+  --destructive: 0 63% 31%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 217 23% 28%;
+  --input: 217 23% 28%;
+  --ring: 199 89% 48%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+}
