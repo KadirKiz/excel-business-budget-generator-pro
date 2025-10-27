@@ -86,6 +86,7 @@ export function GoalsManager() {
   }, [goals, completedGoals]);
 
   const handleOpenDialog = (goal?: Goal) => {
+    console.log('Opening dialog, goal:', goal, 'categories:', categories);
     if (goal) {
       setEditingGoal(goal);
       setFormData({
@@ -109,8 +110,12 @@ export function GoalsManager() {
         description: '',
       });
     }
+    console.log('Setting isDialogOpen to true, current state:', isDialogOpen);
     setIsDialogOpen(true);
+    console.log('After setState, isDialogOpen should be true');
   };
+
+  console.log('GoalsManager render, isDialogOpen:', isDialogOpen);
 
   const handleSave = () => {
     if (!formData.name.trim() || !formData.target || !formData.deadline) return;
@@ -333,7 +338,10 @@ export function GoalsManager() {
       </Card>
 
       {/* Dialog */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <Dialog open={isDialogOpen} onOpenChange={(open) => {
+        console.log('Dialog onOpenChange called with:', open);
+        setIsDialogOpen(open);
+      }}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>
             <DialogTitle>
@@ -397,13 +405,14 @@ export function GoalsManager() {
                 <div>
                   <Label htmlFor="categoryId">Kategorie (optional)</Label>
                   <Select
-                    value={formData.categoryId || undefined}
-                    onValueChange={(value) => setFormData({ ...formData, categoryId: value })}
+                    value={formData.categoryId || "none"}
+                    onValueChange={(value) => setFormData({ ...formData, categoryId: value === "none" ? '' : value })}
                   >
                     <SelectTrigger>
                       <SelectValue placeholder="Keine Kategorie" />
                     </SelectTrigger>
                     <SelectContent>
+                      <SelectItem value="none">Keine Kategorie</SelectItem>
                       {categories.map((cat) => (
                         <SelectItem key={cat.id} value={cat.id}>
                           {cat.name}
