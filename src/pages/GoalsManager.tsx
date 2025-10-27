@@ -396,14 +396,13 @@ export function GoalsManager() {
               <div>
                 <Label htmlFor="categoryId">Kategorie (optional)</Label>
                 <Select
-                  value={formData.categoryId}
+                  value={formData.categoryId || undefined}
                   onValueChange={(value) => setFormData({ ...formData, categoryId: value })}
                 >
                   <SelectTrigger>
                     <SelectValue placeholder="Keine Kategorie" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Keine Kategorie</SelectItem>
                     {categories.map((cat) => (
                       <SelectItem key={cat.id} value={cat.id}>
                         {cat.name}

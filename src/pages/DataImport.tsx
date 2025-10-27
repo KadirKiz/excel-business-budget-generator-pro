@@ -203,7 +203,7 @@ export function DataImport() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">-- Auslassen --</SelectItem>
+                        <SelectItem value="__skip__">-- Auslassen --</SelectItem>
                         {headers.map((h) => (
                           <SelectItem key={h} value={h}>{h}</SelectItem>
                         ))}

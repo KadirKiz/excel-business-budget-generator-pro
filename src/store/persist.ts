@@ -64,9 +64,26 @@ export async function hydrateStores(): Promise<void> {
  * Save current state (called by subscription)
  */
 const debouncedSave = debounce(async () => {
+  // Only save serializable data (not functions)
+  const configState = useAppConfigStore.getState();
+  const appConfig = {
+    country: configState.country,
+    locale: configState.locale,
+    currency: configState.currency,
+    purpose: configState.purpose,
+    designMode: configState.designMode,
+    companyName: configState.companyName,
+    logoUrl: configState.logoUrl,
+    fiscalStartMonth: configState.fiscalStartMonth,
+    fiscalStartDay: configState.fiscalStartDay,
+    liquidityThreshold: configState.liquidityThreshold,
+    unusualExpenseMultiplier: configState.unusualExpenseMultiplier,
+    budgetCriticalPct: configState.budgetCriticalPct,
+  };
+
   const state: PersistState = {
     version: 4,
-    appConfig: useAppConfigStore.getState(),
+    appConfig,
     data: {
       transactions: useDataStore.getState().transactions,
       categories: useDataStore.getState().categories,
