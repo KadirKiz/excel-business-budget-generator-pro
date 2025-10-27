@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAppConfigStore } from '../store/slices/appConfigSlice';
@@ -7,8 +8,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../co
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '../components/ui/chart';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
-import { AlertCircle, XCircle } from 'lucide-react';
+import { AlertCircle, XCircle, TrendingUp, TrendingDown } from 'lucide-react';
 import { formatCurrency } from '../lib/format';
+import { calculateTrends, formatTrend, getTrendLabel, calculatePercentChange } from '../lib/trends';
 import { Area, AreaChart, Bar, BarChart, Cell, CartesianGrid, Line, LineChart, Pie, PieChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
 export function Dashboard() {
@@ -24,18 +26,47 @@ export function Dashboard() {
   const monthlyData = selectMonthlyAgg();
   const categoryData = selectCategoryTotals();
 
-  // Calculate totals
-  const totalIncome = Object.values(monthlyData).reduce((sum, m) => sum + m.income, 0);
-  const totalExpense = Object.values(monthlyData).reduce((sum, m) => sum + m.expense, 0);
-  const balance = totalIncome - totalExpense;
-  
-  const savingsRate = totalIncome > 0 ? ((balance / totalIncome) * 100).toFixed(1) : '0.0';
+  // Calculate totals and trends dynamically
+  const kpiData = useMemo(() => {
+    const monthlyArray = Object.entries(monthlyData).sort();
+    const totalIncome = Object.values(monthlyData).reduce((sum, m) => sum + m.income, 0);
+    const totalExpense = Object.values(monthlyData).reduce((sum, m) => sum + m.expense, 0);
+    const balance = totalIncome - totalExpense;
+    
+    const savingsRate = totalIncome > 0 ? ((balance / totalIncome) * 100).toFixed(1) : '0.0';
 
-  const kpiData = [
-    { title: 'Gesamteinnahmen', value: totalIncome, trend: '+5.2%' },
-    { title: 'Gesamtausgaben', value: totalExpense, trend: '-2.1%' },
-    { title: 'Saldo', value: balance, trend: `Sparquote: ${savingsRate}%` },
-  ];
+    // Calculate trends comparing last 2 months
+    let incomeTrend = 0;
+    let expenseTrend = 0;
+    
+    if (monthlyArray.length >= 2) {
+      const currentMonth = monthlyArray[monthlyArray.length - 1][1];
+      const previousMonth = monthlyArray[monthlyArray.length - 2][1];
+      incomeTrend = calculatePercentChange(currentMonth.income, previousMonth.income);
+      expenseTrend = calculatePercentChange(currentMonth.expense, previousMonth.expense);
+    }
+
+    return [
+      { 
+        title: 'Gesamteinnahmen', 
+        value: totalIncome, 
+        trend: formatTrend(incomeTrend),
+        trendType: getTrendLabel(incomeTrend, true) 
+      },
+      { 
+        title: 'Gesamtausgaben', 
+        value: totalExpense, 
+        trend: formatTrend(expenseTrend),
+        trendType: getTrendLabel(expenseTrend, false) 
+      },
+      { 
+        title: 'Saldo', 
+        value: balance, 
+        trend: `Sparquote: ${savingsRate}%`,
+        trendType: 'neutral' as const 
+      },
+    ];
+  }, [monthlyData]);
 
   const activeAlerts = alerts.filter((a) => !a.resolved).slice(0, 3);
 
@@ -50,19 +81,39 @@ export function Dashboard() {
 
       {/* KPI Cards */}
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {kpiData.map((kpi) => (
-          <Card key={kpi.title}>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{kpi.title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">
-                {formatCurrency(kpi.value, currency, locale)}
-              </div>
-              <p className="text-xs text-muted-foreground mt-1">{kpi.trend}</p>
-            </CardContent>
-          </Card>
-        ))}
+        {kpiData.map((kpi) => {
+          const isPositive = kpi.trendType === 'positive';
+          const TrendIcon = isPositive ? TrendingUp : TrendingDown;
+          
+          return (
+            <Card key={kpi.title}>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">{kpi.title}</CardTitle>
+                {kpi.trendType !== 'neutral' && (
+                  <TrendIcon 
+                    className={`h-4 w-4 ${
+                      isPositive ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                    }`} 
+                  />
+                )}
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">
+                  {formatCurrency(kpi.value, currency, locale)}
+                </div>
+                <p 
+                  className={`text-xs mt-1 ${
+                    kpi.trendType === 'positive' ? 'text-green-600 dark:text-green-400' : 
+                    kpi.trendType === 'negative' ? 'text-red-600 dark:text-red-400' : 
+                    'text-muted-foreground'
+                  }`}
+                >
+                  {kpi.trend}
+                </p>
+              </CardContent>
+            </Card>
+          );
+        })}
       </div>
 
       {/* Alerts Widget */}
