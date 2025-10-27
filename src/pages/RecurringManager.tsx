@@ -96,7 +96,7 @@ export function RecurringManager() {
     if (!formData.name.trim() || !formData.amount || !formData.category) return;
 
     const recurringData: RecurringTransaction = {
-      id: editingRecurring?.id || `recurring-${Date.now()}`,
+      id: editingRecurring?.id || crypto.randomUUID(),
       name: formData.name,
       frequency: formData.frequency,
       amount: parseFloat(formData.amount),

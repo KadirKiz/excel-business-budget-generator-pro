@@ -60,7 +60,7 @@ export const defaultRules: AlertRule[] = [
             const severity = diffPct > 20 ? 'critical' : 'warning';
 
             alerts.push({
-              id: `alert-${Date.now()}-${Math.random()}`,
+              id: crypto.randomUUID(),
               kind: 'budget',
               severity,
               title: `Budget-Überschreitung: ${getCategoryName(catBudget.categoryId, state.categories)}`,
@@ -148,7 +148,7 @@ export const defaultRules: AlertRule[] = [
         .forEach((tx) => {
           if (Math.abs(tx.amount) > threshold) {
             alerts.push({
-              id: `alert-${Date.now()}-${Math.random()}`,
+              id: crypto.randomUUID(),
               kind: 'recurring',
               severity: 'info',
               title: `Ungewöhnlich große Ausgabe`,
@@ -183,7 +183,7 @@ export const defaultRules: AlertRule[] = [
           const ratio = data.expense / data.income;
           if (ratio > 0.8) {
             alerts.push({
-              id: `alert-${Date.now()}-${Math.random()}`,
+              id: crypto.randomUUID(),
               kind: 'recurring',
               severity: 'warning',
               title: `Hoher Ausgaben-Anteil: ${month}`,

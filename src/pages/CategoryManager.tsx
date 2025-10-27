@@ -71,7 +71,7 @@ export function CategoryManager() {
     if (!formData.name.trim()) return;
 
     const categoryData: Category = {
-      id: editingCategory?.id || `category-${Date.now()}`,
+      id: editingCategory?.id || crypto.randomUUID(),
       name: formData.name,
       type: formData.type,
       color: formData.color,

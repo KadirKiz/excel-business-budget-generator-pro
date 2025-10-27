@@ -1,5 +1,4 @@
 import { create } from 'zustand';
-import { v4 as uuidv4 } from 'uuid';
 
 export interface Debt {
   id: string;
@@ -37,7 +36,7 @@ export const useDebtsStore = create<DebtsState>((set, get) => ({
 
   addDebt: (debtData) => {
     const newDebt: Debt = {
-      id: uuidv4(),
+      id: crypto.randomUUID(),
       ...debtData,
       currentBalance: debtData.totalAmount,
       paymentHistory: [],

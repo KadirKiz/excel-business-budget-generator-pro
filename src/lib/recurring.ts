@@ -17,7 +17,7 @@ export function generateTransactionsFromRecurring(
 
     // Generate transaction
     const transaction: Transaction = {
-      id: `recurring-${recurring.id}-${Date.now()}`,
+      id: `recurring-${recurring.id}-${crypto.randomUUID()}`,
       date: new Date(recurring.nextOccurrence),
       amount: recurring.type === 'income' ? recurring.amount : -recurring.amount,
       currency: recurring.currency,

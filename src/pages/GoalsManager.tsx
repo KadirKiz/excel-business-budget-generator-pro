@@ -115,7 +115,7 @@ export function GoalsManager() {
     if (!formData.name.trim() || !formData.target || !formData.deadline) return;
 
     const goalData: Goal = {
-      id: editingGoal?.id || `goal-${Date.now()}`,
+      id: editingGoal?.id || crypto.randomUUID(),
       name: formData.name,
       type: formData.type,
       target: parseFloat(formData.target),
