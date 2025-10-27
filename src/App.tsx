@@ -11,6 +11,7 @@ import { ExportGenerator } from './pages/ExportGenerator';
 import { Settings } from './pages/Settings';
 import { CategoryManager } from './pages/CategoryManager';
 import { GoalsManager } from './pages/GoalsManager';
+import { RecurringManager } from './pages/RecurringManager';
 import { Toaster } from './components/ui/sonner';
 
 export default function App() {
@@ -88,6 +89,14 @@ export default function App() {
           element={
             <AppLayout>
               <GoalsManager />
+            </AppLayout>
+          }
+        />
+        <Route
+          path="/recurring"
+          element={
+            <AppLayout>
+              <RecurringManager />
             </AppLayout>
           }
         />

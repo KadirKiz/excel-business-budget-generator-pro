@@ -4,6 +4,7 @@ import { useDataStore } from './slices/dataSlice';
 import { useModulesStore } from './slices/modulesSlice';
 import { useAlertsStore } from './slices/alertsSlice';
 import { useGoalsStore } from './slices/goalsSlice';
+import { useRecurringStore } from './slices/recurringSlice';
 import { debounce } from '../lib/persistence';
 
 /**
@@ -42,8 +43,14 @@ export async function hydrateStores(): Promise<void> {
     useGoalsStore.setState({ goals: persisted.goals });
   }
 
+  // Restore recurrings
+  if (persisted.recurrings) {
+    useRecurringStore.setState({ recurrings: persisted.recurrings });
+  }
+
   console.log('Stores hydrated from persisted state');
   console.log('Goals restored:', persisted.goals?.length || 0);
+  console.log('Recurrings restored:', persisted.recurrings?.length || 0);
 }
 
 /**
@@ -51,7 +58,7 @@ export async function hydrateStores(): Promise<void> {
  */
 const debouncedSave = debounce(async () => {
   const state: PersistState = {
-    version: 2,
+    version: 3,
     appConfig: useAppConfigStore.getState(),
     data: {
       transactions: useDataStore.getState().transactions,
@@ -66,6 +73,7 @@ const debouncedSave = debounce(async () => {
     },
     alerts: useAlertsStore.getState().alerts,
     goals: useGoalsStore.getState().goals,
+    recurrings: useRecurringStore.getState().recurrings,
   };
 
   await saveAppState(state);
@@ -95,6 +103,10 @@ export function setupAutoSave(): () => void {
     debouncedSave();
   });
 
+  const unsubscribeRecurrings = useRecurringStore.subscribe(() => {
+    debouncedSave();
+  });
+
   // Return cleanup function
   return () => {
     unsubscribeConfig();
@@ -102,6 +114,7 @@ export function setupAutoSave(): () => void {
     unsubscribeModules();
     unsubscribeAlerts();
     unsubscribeGoals();
+    unsubscribeRecurrings();
   };
 }
 

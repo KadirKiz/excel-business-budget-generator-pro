@@ -3,9 +3,10 @@ import { saveAs } from 'file-saver';
 import type { AppConfig, Transaction, Category, BudgetPlan } from '../types/finance';
 import type { Alert } from './alerts';
 import type { Goal } from '../store/slices/goalsSlice';
+import type { RecurringTransaction } from '../store/slices/recurringSlice';
 
 const STORAGE_KEY = 'ebbgp_state_v1';
-const STORAGE_VERSION = 2; // Updated to include goals
+const STORAGE_VERSION = 3; // Updated to include recurring transactions
 
 export interface PersistState {
   version: number;
@@ -23,6 +24,7 @@ export interface PersistState {
   };
   alerts?: Alert[];
   goals?: Goal[];
+  recurrings?: RecurringTransaction[];
   lastSaved?: string;
 }
 
@@ -85,6 +87,16 @@ export async function loadAppState(): Promise<PersistState | null> {
       state.alerts = state.alerts.map((alert) => ({
         ...alert,
         createdAt: alert.createdAt,
+      }));
+    }
+
+    if (state.recurrings) {
+      state.recurrings = state.recurrings.map((recurring) => ({
+        ...recurring,
+        startDate: new Date(recurring.startDate),
+        endDate: recurring.endDate ? new Date(recurring.endDate) : undefined,
+        nextOccurrence: new Date(recurring.nextOccurrence),
+        lastGenerated: recurring.lastGenerated ? new Date(recurring.lastGenerated) : undefined,
       }));
     }
 
@@ -163,6 +175,16 @@ export async function importAppStateFromFile(file: File): Promise<PersistState> 
 
         if (state.modules?.cashflow?.balanceDate) {
           state.modules.cashflow.balanceDate = new Date(state.modules.cashflow.balanceDate);
+        }
+
+        if (state.recurrings) {
+          state.recurrings = state.recurrings.map((recurring) => ({
+            ...recurring,
+            startDate: new Date(recurring.startDate),
+            endDate: recurring.endDate ? new Date(recurring.endDate) : undefined,
+            nextOccurrence: new Date(recurring.nextOccurrence),
+            lastGenerated: recurring.lastGenerated ? new Date(recurring.lastGenerated) : undefined,
+          }));
         }
 
         resolve(state);
