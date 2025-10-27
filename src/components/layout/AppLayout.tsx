@@ -14,6 +14,7 @@ import {
   Tag,
   Target,
   Repeat,
+  Wallet,
 } from 'lucide-react';
 import { ThemeToggle } from '../ui/ThemeToggle';
 import { AlertsDrawer } from '../ui/AlertsDrawer';
@@ -30,6 +31,7 @@ const navigation = [
   { name: 'Analyse', href: '/analysis', icon: TrendingUp },
   { name: 'Ziele', href: '/goals', icon: Target },
   { name: 'Wiederkehrend', href: '/recurring', icon: Repeat },
+  { name: 'Schulden', href: '/debts', icon: Wallet },
   { name: 'Module', href: '/modules', icon: Boxes },
   { name: 'Kategorien', href: '/categories', icon: Tag },
   { name: 'Daten', href: '/data', icon: Database },

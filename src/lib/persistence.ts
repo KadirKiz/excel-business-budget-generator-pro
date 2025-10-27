@@ -4,9 +4,10 @@ import type { AppConfig, Transaction, Category, BudgetPlan } from '../types/fina
 import type { Alert } from './alerts';
 import type { Goal } from '../store/slices/goalsSlice';
 import type { RecurringTransaction } from '../store/slices/recurringSlice';
+import type { Debt } from '../store/slices/debtsSlice';
 
 const STORAGE_KEY = 'ebbgp_state_v1';
-const STORAGE_VERSION = 3; // Updated to include recurring transactions
+const STORAGE_VERSION = 4; // Updated to include debts
 
 export interface PersistState {
   version: number;
@@ -25,6 +26,7 @@ export interface PersistState {
   alerts?: Alert[];
   goals?: Goal[];
   recurrings?: RecurringTransaction[];
+  debts?: Debt[];
   lastSaved?: string;
 }
 
@@ -97,6 +99,18 @@ export async function loadAppState(): Promise<PersistState | null> {
         endDate: recurring.endDate ? new Date(recurring.endDate) : undefined,
         nextOccurrence: new Date(recurring.nextOccurrence),
         lastGenerated: recurring.lastGenerated ? new Date(recurring.lastGenerated) : undefined,
+      }));
+    }
+
+    if (state.debts) {
+      state.debts = state.debts.map((debt) => ({
+        ...debt,
+        startDate: new Date(debt.startDate),
+        endDate: debt.endDate ? new Date(debt.endDate) : undefined,
+        paymentHistory: debt.paymentHistory.map((payment) => ({
+          ...payment,
+          date: new Date(payment.date),
+        })),
       }));
     }
 
@@ -184,6 +198,18 @@ export async function importAppStateFromFile(file: File): Promise<PersistState> 
             endDate: recurring.endDate ? new Date(recurring.endDate) : undefined,
             nextOccurrence: new Date(recurring.nextOccurrence),
             lastGenerated: recurring.lastGenerated ? new Date(recurring.lastGenerated) : undefined,
+          }));
+        }
+
+        if (state.debts) {
+          state.debts = state.debts.map((debt) => ({
+            ...debt,
+            startDate: new Date(debt.startDate),
+            endDate: debt.endDate ? new Date(debt.endDate) : undefined,
+            paymentHistory: debt.paymentHistory.map((payment) => ({
+              ...payment,
+              date: new Date(payment.date),
+            })),
           }));
         }
 

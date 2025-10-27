@@ -12,6 +12,7 @@ import { Settings } from './pages/Settings';
 import { CategoryManager } from './pages/CategoryManager';
 import { GoalsManager } from './pages/GoalsManager';
 import { RecurringManager } from './pages/RecurringManager';
+import { DebtsManager } from './pages/DebtsManager';
 import { Toaster } from './components/ui/sonner';
 
 export default function App() {
@@ -97,6 +98,14 @@ export default function App() {
           element={
             <AppLayout>
               <RecurringManager />
+            </AppLayout>
+          }
+        />
+        <Route
+          path="/debts"
+          element={
+            <AppLayout>
+              <DebtsManager />
             </AppLayout>
           }
         />
