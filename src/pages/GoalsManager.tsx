@@ -342,7 +342,8 @@ export function GoalsManager() {
         console.log('Dialog onOpenChange called with:', open);
         setIsDialogOpen(open);
       }}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          {console.log('DialogContent rendering, isDialogOpen:', isDialogOpen)}
           <DialogHeader>
             <DialogTitle>
               {editingGoal ? 'Ziel bearbeiten' : 'Neues Ziel'}
