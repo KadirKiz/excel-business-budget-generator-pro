@@ -393,24 +393,26 @@ export function GoalsManager() {
                 />
               </div>
 
-              <div>
-                <Label htmlFor="categoryId">Kategorie (optional)</Label>
-                <Select
-                  value={formData.categoryId || undefined}
-                  onValueChange={(value) => setFormData({ ...formData, categoryId: value })}
-                >
-                  <SelectTrigger>
-                    <SelectValue placeholder="Keine Kategorie" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map((cat) => (
-                      <SelectItem key={cat.id} value={cat.id}>
-                        {cat.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+              {categories.length > 0 && (
+                <div>
+                  <Label htmlFor="categoryId">Kategorie (optional)</Label>
+                  <Select
+                    value={formData.categoryId || undefined}
+                    onValueChange={(value) => setFormData({ ...formData, categoryId: value })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Keine Kategorie" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {categories.map((cat) => (
+                        <SelectItem key={cat.id} value={cat.id}>
+                          {cat.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
             </div>
 
             <div className="grid gap-4 md:grid-cols-2">
