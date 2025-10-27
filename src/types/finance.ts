@@ -114,12 +114,5 @@ export interface ExportSession {
   resultLink?: string;
 }
 
-export interface Alert {
-  id: string;
-  type: 'warning' | 'error' | 'info' | 'success';
-  title: string;
-  message: string;
-  timestamp: Date;
-  read: boolean;
-}
+// Alert type moved to src/lib/alerts.ts to avoid duplication
 

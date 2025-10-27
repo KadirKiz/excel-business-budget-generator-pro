@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Plus, Edit, Trash2, Target, TrendingUp, TrendingDown, CheckCircle } from 'lucide-react';
 import { useGoalsStore, type Goal } from '../store/slices/goalsSlice';
@@ -48,9 +48,16 @@ export function GoalsManager() {
   const addGoal = useGoalsStore((state) => state.addGoal);
   const updateGoal = useGoalsStore((state) => state.updateGoal);
   const removeGoal = useGoalsStore((state) => state.removeGoal);
+  const updateGoalsProgress = useGoalsStore((state) => state.updateGoalsProgress);
+  const transactions = useDataStore((state) => state.transactions);
   const categories = useDataStore((state) => state.categories);
   const { selectLocaleCurrency } = useAppConfigStore();
   const { locale, currency } = selectLocaleCurrency();
+
+  // Update goals progress when transactions change
+  useEffect(() => {
+    updateGoalsProgress(transactions);
+  }, [transactions, updateGoalsProgress]);
   
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingGoal, setEditingGoal] = useState<Goal | null>(null);

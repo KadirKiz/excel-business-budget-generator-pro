@@ -10,7 +10,6 @@ interface AlertsSlice {
   resolveAlert: (id: string) => void;
   dismissAlert: (id: string) => void;
   clearAll: () => void;
-  markAsRead: (id: string) => void;
 }
 
 export const useAlertsStore = create<AlertsSlice>((set) => ({
@@ -37,10 +36,6 @@ export const useAlertsStore = create<AlertsSlice>((set) => ({
   })),
 
   clearAll: () => set({ alerts: [], lastEvaluatedAt: undefined }),
-  
-  markAsRead: (id) => set((state) => ({
-    alerts: state.alerts.map((a) => (a.id === id ? { ...a, resolved: true } : a)),
-  })),
 }));
 
 // Helper to get unread count

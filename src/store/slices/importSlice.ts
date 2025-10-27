@@ -26,7 +26,11 @@ interface ImportSlice extends ImportSession {
 
 const initialState: ImportSession & { headers: string[]; rawRows: CsvRawRow[]; preview: CsvRawRow[] } = {
   source: 'csv',
-  mapping: {},
+  mapping: {
+    date: '',
+    description: '',
+    amount: '',
+  },
   progress: 0,
   errors: [],
   status: 'idle',
