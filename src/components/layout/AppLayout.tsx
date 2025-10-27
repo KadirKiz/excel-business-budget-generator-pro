@@ -11,6 +11,8 @@ import {
   Settings,
   Menu,
   X,
+  Tag,
+  Target,
 } from 'lucide-react';
 import { ThemeToggle } from '../ui/ThemeToggle';
 import { AlertsDrawer } from '../ui/AlertsDrawer';
@@ -25,7 +27,9 @@ const navigation = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Transaktionen', href: '/transactions', icon: Receipt },
   { name: 'Analyse', href: '/analysis', icon: TrendingUp },
+  { name: 'Ziele', href: '/goals', icon: Target },
   { name: 'Module', href: '/modules', icon: Boxes },
+  { name: 'Kategorien', href: '/categories', icon: Tag },
   { name: 'Daten', href: '/data', icon: Database },
   { name: 'Export', href: '/export', icon: FileDown },
   { name: 'Einstellungen', href: '/settings', icon: Settings },

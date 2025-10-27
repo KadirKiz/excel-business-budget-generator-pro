@@ -2,9 +2,10 @@ import localforage from 'localforage';
 import { saveAs } from 'file-saver';
 import type { AppConfig, Transaction, Category, BudgetPlan } from '../types/finance';
 import type { Alert } from './alerts';
+import type { Goal } from '../store/slices/goalsSlice';
 
 const STORAGE_KEY = 'ebbgp_state_v1';
-const STORAGE_VERSION = 1;
+const STORAGE_VERSION = 2; // Updated to include goals
 
 export interface PersistState {
   version: number;
@@ -21,6 +22,7 @@ export interface PersistState {
     netWorth: { enabled: boolean };
   };
   alerts?: Alert[];
+  goals?: Goal[];
   lastSaved?: string;
 }
 

@@ -13,6 +13,7 @@ interface DataSlice extends DataState {
   updateTransaction: (id: string, updates: Partial<Transaction>) => void;
   addCategory: (category: Category) => void;
   removeCategory: (id: string) => void;
+  deleteCategory: (id: string) => void; // Alias for removeCategory
   updateCategory: (id: string, updates: Partial<Category>) => void;
   addBudget: (budget: BudgetPlan) => void;
   removeBudget: (id: string) => void;
@@ -52,6 +53,9 @@ export const useDataStore = create<DataSlice>((set) => ({
     categories: [...state.categories, category],
   })),
   removeCategory: (id) => set((state) => ({
+    categories: state.categories.filter((c) => c.id !== id),
+  })),
+  deleteCategory: (id) => set((state) => ({
     categories: state.categories.filter((c) => c.id !== id),
   })),
   updateCategory: (id, updates) => set((state) => ({

@@ -9,6 +9,8 @@ import { ModuleManager } from './pages/ModuleManager';
 import { DataImport } from './pages/DataImport';
 import { ExportGenerator } from './pages/ExportGenerator';
 import { Settings } from './pages/Settings';
+import { CategoryManager } from './pages/CategoryManager';
+import { GoalsManager } from './pages/GoalsManager';
 import { Toaster } from './components/ui/sonner';
 
 export default function App() {
@@ -70,6 +72,22 @@ export default function App() {
           element={
             <AppLayout>
               <Settings />
+            </AppLayout>
+          }
+        />
+        <Route
+          path="/categories"
+          element={
+            <AppLayout>
+              <CategoryManager />
+            </AppLayout>
+          }
+        />
+        <Route
+          path="/goals"
+          element={
+            <AppLayout>
+              <GoalsManager />
             </AppLayout>
           }
         />
